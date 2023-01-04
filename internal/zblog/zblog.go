@@ -1,15 +1,19 @@
-// Copyright 2022 Innkeeper Belm(孔令飞) <nosbelm@qq.com>. All rights reserved.
+// Copyright 2022 Innkeeper zmjaction(zhaomingjun) <748173631@qq.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
-// this file is https://github.com/marmotedu/miniblog.
+// this file is https://github.com/zmjaction/zblog
 
 package zblog
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var cfgFile string
 
 // NewZBlogCommand 创建一个 *cobra.Command 对象. 之后，可以使用 Command 对象的 Execute 方法来启动应用程序.
 func NewZBlogCommand() *cobra.Command {
@@ -21,7 +25,7 @@ func NewZBlogCommand() *cobra.Command {
 		// 命令的详细描述
 		Long: `A good Go practical project, used to create user with basic information.
 
-Find more miniblog information at:
+Find more zblog information at:
 	https://github.com/zmjaction/zblog#readme`,
 
 		// 命令出错时，不打印帮助信息。不需要打印帮助信息，设置为 true 可以保持命令出错时一眼就能看到错误信息
@@ -41,12 +45,26 @@ Find more miniblog information at:
 			return nil
 		},
 	}
+	// 以下设置，使得 initConfig 函数在每个命令运行时都会被调用以读取配置
+	cobra.OnInitialize(initConfig)
+
+	// 在这里您将定义标志和配置设置。
+
+	// Cobra 支持持久性标志(PersistentFlag)，该标志可用于它所分配的命令以及该命令下的每个子命令
+	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "The path to the zblog configuration file. Empty string for no configuration file.")
+
+	// Cobra 也支持本地标志，本地标志只能在其所绑定的命令上使用
+	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	return cmd
 }
 
 // run 函数是实际的业务代码入口函数.
 func run() error {
-	fmt.Println("Hello ZBlog!")
+	// 打印所有的配置项及其值
+	settings, _ := json.Marshal(viper.AllSettings())
+	fmt.Println(string(settings))
+	// 打印 db -> username 配置项的值
+	fmt.Println(viper.GetString("db.username"))
 	return nil
 }
