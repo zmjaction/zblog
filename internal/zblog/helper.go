@@ -23,6 +23,11 @@ const (
 	defaultConfigName = "zblog.yaml"
 )
 
+/*
+如果指定了 cfgFile 则直接读取该配置文件，如果没有设置 cfgFile 则在用户主目录中搜索名为
+.zblog.yaml 的配置文件，如果找到则读取。如果 cfgFile 为空，并且在用户主目录下没有找到
+.zblog.yaml 配置文件，则调用 viper.ReadInConfig() 读取配置文件时报错
+*/
 // initConfig 设置需要读取的配置文件名、环境变量，并读取配置文件内容到 viper 中.
 func initConfig() {
 	if cfgFile != "" {
