@@ -74,7 +74,7 @@ func NewLogger(opts *Options) *zapLogger {
 	}
 	// 创建构建 zap.Logger 需要的配置
 	cfg := &zap.Config{
-		// 是否在日志中显示调用日志所在的文件和行号，例如：`"caller":"miniblog/miniblog.go:75"`
+		// 是否在日志中显示调用日志所在的文件和行号，例如：`"caller":"zblog/zblog.go:75"`
 		DisableCaller: opts.DisableCaller,
 		// 是否禁止在 panic 及以上级别打印堆栈信息
 		DisableStacktrace: opts.DisableStacktrace,

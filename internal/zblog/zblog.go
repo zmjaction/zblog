@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/zmjaction/zblog/internal/pkg/log"
+	"github.com/zmjaction/zblog/pkg/version/verflag"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -33,6 +34,7 @@ Find more zblog information at:
 		SilenceUsage: true,
 		// 指定调用 cmd.Execute() 时，执行的 Run 函数，函数执行失败会返回错误信息
 		RunE: func(cmd *cobra.Command, args []string) error {
+			verflag.PrintAndExitIfRequested()
 			// 初始化日志
 			log.Init(logOptions())
 			// Sync 将缓存中的日志刷新到磁盘文件中
@@ -60,6 +62,9 @@ Find more zblog information at:
 
 	// Cobra 也支持本地标志，本地标志只能在其所绑定的命令上使用
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// 添加 --version 标志
+	verflag.AddFlags(cmd.PersistentFlags())
 
 	return cmd
 }
