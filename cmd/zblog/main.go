@@ -6,8 +6,10 @@
 package main
 
 import (
-	"github.com/zmjaction/zblog/internal/zblog"
 	"os"
+
+	"github.com/zmjaction/zblog/internal/zblog"
+	_ "go.uber.org/automaxprocs"
 )
 
 // Go 程序的默认入口函数(主函数).
