@@ -19,8 +19,8 @@ func (err *Errno) Error() string {
 	return err.Message
 }
 
-// SerMessage 设置 Error 类型错误中的Message 字段
-func (err *Errno) SerMessage(format string, args ...interface{}) *Errno {
+// SetMessage 设置 Error 类型错误中的Message 字段
+func (err *Errno) SetMessage(format string, args ...interface{}) *Errno {
 	err.Message = fmt.Sprintf(format, args)
 	return err
 }
