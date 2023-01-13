@@ -7,6 +7,7 @@ package zblog
 
 import (
 	"github.com/gin-gonic/gin"
+	mw "github.com/zmjaction/zblog/internal/pkg/middleware"
 
 	"github.com/zmjaction/zblog/internal/pkg/core"
 	"github.com/zmjaction/zblog/internal/pkg/errno"
@@ -31,6 +32,8 @@ func installRouters(g *gin.Engine) error {
 
 	uc := user.New(store.S)
 
+	g.POST("/login", uc.Login)
+
 	// 创建 v1 路由分组
 	v1 := g.Group("/v1")
 	{
@@ -38,6 +41,8 @@ func installRouters(g *gin.Engine) error {
 		userv1 := v1.Group("/users")
 		{
 			userv1.POST("", uc.Create)
+			userv1.PUT(":name/change-password", uc.ChangePassword)
+			userv1.Use(mw.Authn())
 		}
 	}
 
